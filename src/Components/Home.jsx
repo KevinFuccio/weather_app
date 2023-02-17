@@ -29,6 +29,7 @@ const Home = () => {
     );
     if (citySearched.ok) {
       let dataCity = await citySearched.json();
+      console.log(dataCity);
       dispatch({
         type:"CITY_ADD",
         payload: dataCity[0]
