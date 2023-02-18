@@ -41,8 +41,10 @@ const Home = () => {
     let responseWeather = await fetch(
       `https://api.openweathermap.org/data/2.5/weather?lat=${city.lat}&lon=${city.lon}&appid=31e7a42eab2d0f23945d16d2e4a60acd&units=metric`
     );
-    if (responseWeather.ok) {
+    let responseForecast = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${city.lat}&lon=${city.lon}&appid=31e7a42eab2d0f23945d16d2e4a60acd&units=metric`)
+    if (responseWeather.ok && responseForecast.ok) {
       let dataWeather = await responseWeather.json();
+      console.log(dataWeather);
          setWeather(dataWeather);
 
     }
@@ -76,7 +78,11 @@ const Home = () => {
                 <Card.Title>{weather.name}</Card.Title>
                 <Card.Subtitle className="mb-2 text-muted">
                   {" "}
-                  Temp: {weather.main.temp} feels: {weather.main.feels_like}
+                  Temp: {Math.round(weather.main.temp)}°C
+                </Card.Subtitle>
+                <Card.Subtitle className="mb-2 text-muted">
+                  {" "}
+                  {weather.weather[0].description}
                 </Card.Subtitle>
                 <Link to="/more-informations">
                   <Button
