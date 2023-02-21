@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 const Home = () => {
   const  city = useSelector((state) => state.city)
+  const verification = useSelector((state)=> state.verification)
   const [inputField, setInputField] = useState("");
   const dispatch = useDispatch();
   const [weather, setWeather] = useState(null);
@@ -35,6 +36,16 @@ const Home = () => {
         payload: dataCity[0]
       })
       
+     if(dataCity.length === 0){
+      dispatch({
+        type:"SET_VERIFICATION_TRUE",
+      })
+     }
+     else{
+      dispatch({
+        type:"SET_VERIFICATION_FALSE",
+      })
+     }
     }
   }
   const fetchWeather = async()=>{
@@ -44,7 +55,7 @@ const Home = () => {
     let responseForecast = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${city.lat}&lon=${city.lon}&appid=31e7a42eab2d0f23945d16d2e4a60acd&units=metric`)
     if (responseWeather.ok && responseForecast.ok) {
       let dataWeather = await responseWeather.json();
-      console.log(dataWeather);
+      let dataForecast = await responseForecast.json()
          setWeather(dataWeather);
 
     }
@@ -72,7 +83,9 @@ const Home = () => {
       </Row>
       <Row className="d-flex justify-content-center ">
         <Col xs={12} md={6}>
-          {weather ? (
+          {verification?(<p>Non ci sono citta</p>):(
+            
+          weather ? (
             <Card className="text-center">
               <Card.Body>
                 <Card.Title>{weather.name}</Card.Title>
@@ -100,6 +113,7 @@ const Home = () => {
             </Card>
           ): (
             <p className="text-center">Select a city...</p>
+          )
           )}
         </Col>
       </Row>
