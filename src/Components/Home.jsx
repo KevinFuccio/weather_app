@@ -84,7 +84,6 @@ const Home = () => {
       <Row className="d-flex justify-content-center ">
         <Col xs={12} md={6}>
           {verification?(<p>Non ci sono citta</p>):(
-            
           weather ? (
             <Card className="text-center">
               <Card.Body>
